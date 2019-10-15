@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 #include <stack>
 #include <vector>
@@ -35,9 +34,11 @@ string Calculator::Solve(string formula) {
 	stack<char>* operatorStack = new stack<char>();
 	int len = formula.length();
 	int k = 0;
+	char formulaChar;
 	for (int j = -1; j < len - 1; j++) // 
 	{
-		char formulaChar = formula[j + 1];
+		formulaChar = formula[j + 1];
+
 		if (j == len - 2 || formulaChar == '+' || formulaChar == '-' 
 			/*||formulaChar == '*' || formulaChar == '/'*/) 
 		{
@@ -47,7 +48,7 @@ string Calculator::Solve(string formula) {
 			}
 			else 
 			{
-				if (k < j) 
+				if (k <= j) 
 				{
 					tempStack->push_back(formula.substr(k, j + 1));
 				}
@@ -58,13 +59,15 @@ string Calculator::Solve(string formula) {
 				else 
 				{
 					char stackChar = operatorStack->top();
+
 					if ((stackChar == '+' || stackChar == '-')
 						/*&& (formulaChar == '*' || formulaChar == '/')*/) 
 					{
 						operatorStack->push(stackChar);//formulaChar -> stackChar
 
 					}
-					else {
+					else 
+					{
 						tempStack->push_back(to_string(operatorStack->top()));
 						operatorStack->pop();
 						operatorStack->push(formulaChar);
@@ -75,10 +78,12 @@ string Calculator::Solve(string formula) {
 			k = j + 2;
 		}
 	}
-	while (!operatorStack->empty()) {
+	while (!operatorStack->empty()) 
+	{
 		tempStack->push_back(string(1, operatorStack->top()));
 		operatorStack->pop();
 	}
+
 	stack<string>* calcStack = new stack<string>();
 	for (int i = 0; i < tempStack->size(); i++) {
 		string peekChar = tempStack->at(i);
@@ -93,11 +98,14 @@ string Calculator::Solve(string formula) {
 			if (!calcStack->empty()) 
 			{
 				b1 = stoi(calcStack->top());
+
 				calcStack->pop();
 			}
 
-			if (!calcStack->empty()) {
+			if (!calcStack->empty()) 
+			{
 				a1 = stoi(calcStack->top());
+
 				calcStack->pop();
 			}
 
@@ -106,7 +114,8 @@ string Calculator::Solve(string formula) {
 				calcStack->push(to_string(a1 + b1));
 			}
 
-			else if (peekChar == "-") {
+			else if (peekChar == "-") 
+			{
 				calcStack->push(to_string(a1 - b1));
 			}
 
@@ -127,7 +136,7 @@ int main()
 	Calculator* calc = new Calculator();
 	string question = calc->MakeFormula();
 	cout << question << endl;
-	string ret = calc->Solve("1+20+30+40");
+	string ret = calc->Solve("1+20+30+40");  //"10+20+30+40"
 	cout << ret << endl;
 	getchar();
 }
